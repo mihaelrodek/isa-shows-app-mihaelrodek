@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Shows-Mihael-Rodek</string>
+    <string name="login_text">Login</string>
+    <string name="login_alert">In order to continue please log in.</string>
 </resources>
