@@ -1,7 +1,10 @@
 package com.android.infinum
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.infinum.databinding.ActivityLoginBinding
@@ -29,14 +32,16 @@ class LoginActivity : AppCompatActivity() {
             val password = checkPassword(binding.passwordInput.editText?.text.toString())
 
             if (mail && password) {
-                val intent =
-                    WelcomeActivity.buildIntent(
-                        this,
-                        binding.emailInput.editText?.text.toString()
-                    )
+                val sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.apply {
+                    putString(getString(R.string.username), binding.emailInput.editText?.text.toString().substringBefore("@"))
+                }.apply()
+
+                val intent = Intent(this, ShowsActivity::class.java)
                 startActivity(intent)
-            } else Toast.makeText(this, "Wrong email or password format!", Toast.LENGTH_LONG)
-                .show()
+            }else Toast.makeText(this, "Wrong email or password format!", Toast.LENGTH_LONG).show()
+
         }
 
     }
