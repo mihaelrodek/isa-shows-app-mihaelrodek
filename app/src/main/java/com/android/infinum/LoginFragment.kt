@@ -1,24 +1,36 @@
 package com.android.infinum
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.android.infinum.databinding.ActivityLoginBinding
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.android.infinum.databinding.FragmentLoginBinding
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginFragment : Fragment() {
 
-    private lateinit var binding: ActivityLoginBinding
+    private var _binding: FragmentLoginBinding? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val binding get() = _binding!!
 
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.loginButton.isClickable = false
 
@@ -32,15 +44,15 @@ class LoginActivity : AppCompatActivity() {
             val password = checkPassword(binding.passwordInput.editText?.text.toString())
 
             if (mail && password) {
-                val sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+                val sharedPreferences = this.requireActivity()
+                    .getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
                 editor.apply {
                     putString(getString(R.string.username), binding.emailInput.editText?.text.toString().substringBefore("@"))
                 }.apply()
 
-                val intent = Intent(this, ShowsActivity::class.java)
-                startActivity(intent)
-            }else Toast.makeText(this, "Wrong email or password format!", Toast.LENGTH_LONG).show()
+                findNavController().navigate(R.id.action_first_to_second)
+            }else Toast.makeText(context, "Wrong email or password format!", Toast.LENGTH_LONG).show()
 
         }
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    app:startDestination="@id/first">
+
+    <fragment
+        android:id="@+id/first"
+        android:name="com.android.infinum.LoginFragment"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_first_to_second"
+            app:destination="@id/second"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/second"
+        android:name="com.android.infinum.ShowsFragment"
+        tools:layout="@layout/fragment_shows">
+
+        <argument
+            android:name="myArg"
+            app:argType="integer"/>
+
+        <action
+            android:id="@+id/action_second_to_third"
+            app:destination="@id/third"/>
+
+        <action
+            android:id="@+id/action_second_to_first"
+            app:destination="@id/first"
+            app:popUpTo="@id/first"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/third"
+        android:name="com.android.infinum.ShowDetailsFragment"
+        tools:layout="@layout/fragment_show_details">
+
+        <argument
+            android:name="showID"
+            app:argType="integer"/>
+
+    </fragment>
+</navigation>

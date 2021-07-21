@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.android.infinum.databinding.ActivityLoginBinding
 import com.android.infinum.databinding.ActivityWelcomeBinding
 
 class WelcomeActivity : AppCompatActivity(){
