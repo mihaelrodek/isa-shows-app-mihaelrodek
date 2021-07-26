@@ -13,22 +13,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="32dp"
-        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="36sp"
+            android:textSize="40sp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:text="Shows"/>
+            android:text="@string/shows"/>
 
         <ImageView
             android:id="@+id/refresh"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:src="@drawable/refresh_icon"
             android:layout_gravity="center"
             android:layout_weight="1"/>
@@ -58,11 +58,10 @@
             />
 
         <ImageView
-            android:contentDescription=""
             android:id="@+id/image_triangle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/camera"
+            android:src="@drawable/ic_camera"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +75,7 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:textStyle="bold"
-            android:text="Your shows are not showing. Get it?"
+            android:text="@string/no_shows"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/image_eclipse"/>

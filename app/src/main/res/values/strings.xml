@@ -10,4 +10,5 @@
     <string name="x_reviews_y_average">X REVIEWS, Y AVERAGE</string>
     <string name="star_rating">5</string>
     <string name="username">Username</string>
+    <string name="no_shows">Your shows are not showing. Get it?</string>
 </resources>

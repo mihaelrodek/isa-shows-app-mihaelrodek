@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.infinum.ShowsActivity.ShowData.shows
+import com.android.infinum.ShowData.shows
 import com.android.infinum.databinding.ActivityShowDetailsBinding
 import com.android.infinum.databinding.DialogAddReviewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -16,6 +16,8 @@ class ShowDetailsActivity : AppCompatActivity() {
 
     companion object {
         private const val EXTRA_SHOW = "EXTRA_SHOW"
+        private const val USERNAME = "username"
+        private const val SHARED_PREFS = "sharedPrefs"
 
         fun buildIntent(activity: Activity, showId: String) : Intent {
             val intent = Intent(activity, ShowDetailsActivity::class.java)
@@ -34,22 +36,24 @@ class ShowDetailsActivity : AppCompatActivity() {
 
         val showID = intent.extras?.getString(EXTRA_SHOW)?.toInt()!!
 
-        val sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
         sharedPreferences.edit()
-        user = sharedPreferences.getString(getString(R.string.username),"username").toString()
+        user = sharedPreferences.getString(getString(R.string.username), USERNAME).toString()
 
         binding = ActivityShowDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.ShowDetailsTitle.text = shows[showID-1].name
-        binding.ShowDetailsDescription.text = shows[showID-1].description
-        binding.ShowDetailsImage.setImageResource(shows[showID-1].imageResourceId)
+        val id = showID-1
+
+        binding.ShowDetailsTitle.text = shows[id].name
+        binding.ShowDetailsDescription.text = shows[id].description
+        binding.ShowDetailsImage.setImageResource(shows[id].imageResourceId)
 
         binding.writeReview.setOnClickListener{
-            showAddReviewBottomSheet(showID)
+            showAddReviewBottomSheet(id)
         }
 
-        if(shows[showID - 1].reviews.isEmpty()){
+        if(shows[id].reviews.isEmpty()){
             binding.emptyStateLabel.isVisible = true
             binding.showRecyclerView.isVisible = false
             binding.ratingBarAverage.isVisible = false
@@ -60,25 +64,25 @@ class ShowDetailsActivity : AppCompatActivity() {
             binding.showRecyclerView.isVisible = true
             binding.ratingBarAverage.isVisible = true
             binding.ratingBarAverageText.isVisible = true
-            setAverageRatingAndQuantity(shows[showID-1])
+            setAverageRatingAndQuantity(shows[id])
 
         }
-        initShowsRecycler(showID)
+        initShowsRecycler(id)
 
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
 
 
     }
 
-    private fun initShowsRecycler(showID: Int){
+    private fun initShowsRecycler(id: Int){
 
         binding.showRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        binding.showRecyclerView.adapter = ReviewAdapter(shows[showID-1].reviews, user)
-        reviewAdapter?.setReviews(shows[showID-1].reviews)
+        binding.showRecyclerView.adapter = ReviewAdapter(shows[id].reviews, user)
+        reviewAdapter?.setReviews(shows[id].reviews)
     }
 
-    private fun showAddReviewBottomSheet(showId: Int) {
+    private fun showAddReviewBottomSheet(id: Int) {
         val dialog = BottomSheetDialog(this)
 
         val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
@@ -90,7 +94,7 @@ class ShowDetailsActivity : AppCompatActivity() {
             {
                 Toast.makeText(this, "Please rate the show.", Toast.LENGTH_SHORT).show()
             }else{
-                val show = ShowsActivity.ShowData.shows[showId-1]
+                val show = shows[id]
 
                 val reviewModel = ReviewModel(bottomSheetBinding.reviewComment.text.toString(),
                     bottomSheetBinding.ratingBar.rating, R.drawable.super_mario)
@@ -102,7 +106,7 @@ class ShowDetailsActivity : AppCompatActivity() {
 
                 dialog.dismiss()
 
-                initShowsRecycler(showId)
+                initShowsRecycler(id)
                 
                 if(reviewAdapter?.itemCount != 0) {
 
@@ -125,6 +129,7 @@ class ShowDetailsActivity : AppCompatActivity() {
         for (rev in revs){
             sum+=rev.rating
         }
+
         binding.ratingBarAverageText.text = "${revs.size} REVIEWS, ${(Math.round(sum/revs.size)*100.0)/100.0} AVERAGE"
         binding.ratingBarAverage.rating = (sum/revs.size).toFloat()
     }
