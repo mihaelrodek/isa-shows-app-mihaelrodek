@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/image_eclipse"
-        android:src="@drawable/eclipse_purple"
+        android:src="@drawable/ic_eclipse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -19,11 +19,10 @@
         />
 
     <ImageView
-        android:contentDescription=""
         android:id="@+id/image_triangle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/triangle"
+        android:src="@drawable/ic_triangle"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Welcome!"
+        android:text="@string/welcome"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image_eclipse" />

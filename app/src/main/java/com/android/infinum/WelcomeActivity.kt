@@ -12,8 +12,9 @@ class WelcomeActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityWelcomeBinding
 
-
     companion object {
+
+        private const val USERNAME_SEPARATOR = "@"
         private const val EXTRA_EMAIL = "EXTRA_EMAIL"
 
         fun buildIntent(activity: Activity, email: String) : Intent {
@@ -31,9 +32,9 @@ class WelcomeActivity : AppCompatActivity(){
 
         val email = intent.extras?.getString(EXTRA_EMAIL)
 
-        val emailWithouAt = email?.substringBefore("@")
+        val emailWithouAt = email?.substringBefore(USERNAME_SEPARATOR)
 
-        binding.welcomeDialog.text= "Welcome, ${emailWithouAt}!"
+        binding.welcomeDialog.text= getString(R.string.welcome)+ ", ${emailWithouAt}!"
 
     }
 
