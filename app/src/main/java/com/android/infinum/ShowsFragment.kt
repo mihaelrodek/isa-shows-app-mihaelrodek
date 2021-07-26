@@ -94,7 +94,6 @@ class ShowsFragment : Fragment() {
         binding.logoutButton.setOnClickListener {
             findNavController().navigate(R.id.action_second_to_first)
         }
-
     }
 
     private fun initShowsRecycler() {

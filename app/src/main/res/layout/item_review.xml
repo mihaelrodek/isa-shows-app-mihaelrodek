@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,39 +12,37 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/super_mario"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/review"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-
-        android:textSize="14sp"
-        android:textColor="#3b4354"
-        android:lineSpacingExtra="8sp"
-        tools:text="@string/review"
-
-        android:layout_marginStart="8dp"
-
-        app:layout_constraintTop_toBottomOf="@+id/userName"
-        app:layout_constraintStart_toEndOf="@+id/image"
-        android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
         android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@color/purple_background"
-        tools:text="@string/username"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image"
-
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="8dp"/>
+        android:textColor="@color/purple_background"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/image"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/username" />
+
+    <TextView
+        android:id="@+id/review"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:lineSpacingExtra="8sp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image"
+        app:layout_constraintTop_toBottomOf="@+id/userName"
+        tools:text="@string/review" />
 
 
     <ImageView
@@ -53,25 +50,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/star"
-
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toEndOf="@id/starRating"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintStart_toEndOf="@id/starRating"
+        app:layout_constraintTop_toTopOf="@id/userName" />
 
     <TextView
         android:id="@+id/starRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
         android:src="@drawable/star"
         android:text="@string/star_rating"
         app:flow_horizontalAlign="center"
-        android:layout_marginEnd="40dp"
         app:layout_constraintBottom_toTopOf="@id/review"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="@id/userName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
