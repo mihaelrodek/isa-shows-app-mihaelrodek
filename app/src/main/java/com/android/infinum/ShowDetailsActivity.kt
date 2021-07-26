@@ -124,14 +124,9 @@ class ShowDetailsActivity : AppCompatActivity() {
 
     private fun setAverageRatingAndQuantity(showsModel: ShowsModel){
 
-        val revs = showsModel.reviews
-        var sum = 0.0
-        for (rev in revs){
-            sum+=rev.rating
-        }
-
-        binding.ratingBarAverageText.text = "${revs.size} REVIEWS, ${(Math.round(sum/revs.size)*100.0)/100.0} AVERAGE"
-        binding.ratingBarAverage.rating = (sum/revs.size).toFloat()
+        val helper = showsModel.reviews.map { it.rating }.toList()
+        binding.ratingBarAverageText.text = "${helper.size} REVIEWS, ${(Math.round(helper.average())*100.0)/100.0} AVERAGE"
+        binding.ratingBarAverage.rating = (helper.average()).toFloat()
     }
 
 
