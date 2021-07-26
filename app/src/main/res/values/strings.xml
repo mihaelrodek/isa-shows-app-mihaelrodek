@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Shows-Mihael-Rodek</string>
+    <string name="login_text">Login</string>
+    <string name="login_alert">In order to continue please log in.</string>
+    <string name="shows">Shows</string>
+    <string name="welcome">Welcome</string>
+    <string name="password">Password</string>
+    <string name="invalid_mail">Please enter valid e-mail.</string>
+    <string name="invalid_password">Password should be at least 6 characters long.</string>
 </resources>
