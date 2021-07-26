@@ -38,17 +38,19 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkMailAndPassword(email: String, password: String) {
 
-
-        if (Patterns.EMAIL_ADDRESS.matcher(email).matches() && pwRegex.toRegex().containsMatchIn(password)) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+            Toast.makeText(this, "Wrong email. Please try again.", Toast.LENGTH_SHORT).show()
+        else if(!pwRegex.toRegex().containsMatchIn(password)){
+            Toast.makeText(this, "Wrong password format. Password should contain one capital letter, one lower letter and one number.", Toast.LENGTH_SHORT).show()
+        }
+        else {
             val intent =
                 WelcomeActivity.buildIntent(
                     this,
                     binding.emailInput.editText?.text.toString()
                 )
             startActivity(intent)
-        } else Toast.makeText(this, "Wrong email or password format!", Toast.LENGTH_LONG)
-            .show()
-
+        }
     }
 
 }
