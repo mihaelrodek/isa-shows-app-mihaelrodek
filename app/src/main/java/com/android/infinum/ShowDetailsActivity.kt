@@ -95,7 +95,7 @@ class ShowDetailsActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.rate_show), Toast.LENGTH_SHORT).show()
             } else {
                 val reviewModel = ReviewModel(
-                    bottomSheetBinding.reviewComment.text.toString(),
+                    bottomSheetBinding.reviewCommentEditor.text.toString(),
                     bottomSheetBinding.ratingBar.rating, R.drawable.super_mario
                 )
 
@@ -113,6 +113,9 @@ class ShowDetailsActivity : AppCompatActivity() {
                 }
 
             }
+        }
+        bottomSheetBinding.cancelButton.setOnClickListener {
+            dialog.dismiss()
         }
 
         dialog.show()

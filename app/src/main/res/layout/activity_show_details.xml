@@ -72,7 +72,7 @@
         android:id="@+id/emptyStateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:textStyle="bold"
         android:text="@string/no_reviews_yet"

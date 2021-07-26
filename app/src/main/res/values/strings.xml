@@ -16,4 +16,5 @@
     <string name="invalid_mail">Please enter valid e-mail.</string>
     <string name="invalid_password">Password should be at least 6 characters long.</string>
     <string name="rate_show">Please rate the show.</string>
+    <string name="comment">Comment</string>
 </resources>
