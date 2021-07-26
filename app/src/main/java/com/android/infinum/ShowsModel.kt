@@ -8,8 +8,8 @@ data class ShowsModel(
     val description: String,
     var reviews: List<ReviewModel>,
     @DrawableRes val imageResourceId: Int
-){
-    fun addReview(reviewModel: ReviewModel){
+) {
+    fun addReview(reviewModel: ReviewModel) {
         reviews = reviews + reviewModel
     }
 }

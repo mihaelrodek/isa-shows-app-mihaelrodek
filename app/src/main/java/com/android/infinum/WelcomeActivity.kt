@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.android.infinum.databinding.ActivityWelcomeBinding
 
-class WelcomeActivity : AppCompatActivity(){
+class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWelcomeBinding
 
@@ -15,7 +15,7 @@ class WelcomeActivity : AppCompatActivity(){
     companion object {
         private const val EXTRA_EMAIL = "EXTRA_EMAIL"
 
-        fun buildIntent(activity: Activity, email: String) : Intent {
+        fun buildIntent(activity: Activity, email: String): Intent {
             val intent = Intent(activity, WelcomeActivity::class.java)
             intent.putExtra(EXTRA_EMAIL, email)
             return intent
@@ -32,7 +32,7 @@ class WelcomeActivity : AppCompatActivity(){
 
         val emailWithouAt = email?.substringBefore("@")
 
-        binding.welcomeDialog.text= "Welcome, ${emailWithouAt}!"
+        binding.welcomeDialog.text = "Welcome, ${emailWithouAt}!"
 
     }
 

@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="32dp"
-        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
         android:orientation="horizontal">
 
         <TextView
@@ -23,7 +23,7 @@
             android:textSize="36sp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:text="Shows"/>
+            tools:text="Shows"/>
 
         <ImageView
             android:id="@+id/refresh"
@@ -37,7 +37,7 @@
             android:id="@+id/logout_button"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/logout_button"
+            android:src="@drawable/ic_logout_button"
             android:layout_gravity="center"
             android:layout_weight="1"/>
 
@@ -66,7 +66,6 @@
             />
 
         <ImageView
-            android:contentDescription=""
             android:id="@+id/image_triangle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
