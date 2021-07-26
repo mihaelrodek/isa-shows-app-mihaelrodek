@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import com.android.infinum.databinding.ActivityLoginBinding
 
 
@@ -31,6 +32,7 @@ class LoginActivity : AppCompatActivity() {
 
     companion object {
         private const val USERNAME_SEPARATOR = "@"
+        private const val PW_LEN = 6
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +44,6 @@ class LoginActivity : AppCompatActivity() {
 
         binding.passwordInputEditor.addTextChangedListener(textWatcher)
         binding.emailInputEditor.addTextChangedListener(textWatcher)
-
 
         binding.loginButton.setOnClickListener {
 
@@ -58,7 +59,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkMail(email: String) : Boolean {
 
-        if (!email.contains(USERNAME_SEPARATOR)|| !Patterns.EMAIL_ADDRESS.matcher(email).matches() || email.isEmpty()) {
+        val emailCheck = email.trim()
+
+        if (!emailCheck.contains(USERNAME_SEPARATOR)|| !Patterns.EMAIL_ADDRESS.matcher(emailCheck).matches() || emailCheck.isEmpty()) {
             binding.emailInput.error = getString(R.string.invalid_mail)
             return false
         }else
@@ -68,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkPassword(password : String) : Boolean {
 
-        if (!password.length?.let { len -> len >= 6 }) {
+        if (!password.length?.let { len -> len >= PW_LEN }) {
             println(password)
 
             binding.passwordInput.error = getString(R.string.invalid_password)
