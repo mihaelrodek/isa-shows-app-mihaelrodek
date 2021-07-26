@@ -23,7 +23,7 @@
             android:textSize="36sp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            tools:text="Shows"/>
+            android:text="Shows"/>
 
         <ImageView
             android:id="@+id/refresh"
