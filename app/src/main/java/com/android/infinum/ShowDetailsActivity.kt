@@ -19,13 +19,14 @@ class ShowDetailsActivity : AppCompatActivity() {
         private const val USERNAME = "username"
         private const val SHARED_PREFS = "sharedPrefs"
 
-        fun buildIntent(activity: Activity, showId: String) : Intent {
+        fun buildIntent(activity: Activity, showModel: String): Intent {
             val intent = Intent(activity, ShowDetailsActivity::class.java)
-            intent.putExtra(EXTRA_SHOW, showId)
+            intent.putExtra(EXTRA_SHOW, showModel)
             return intent
         }
     }
-    private var user : String = ""
+
+    private var user: String = ""
 
     private lateinit var binding: ActivityShowDetailsBinding
 
@@ -43,46 +44,46 @@ class ShowDetailsActivity : AppCompatActivity() {
         binding = ActivityShowDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val id = showID-1
+        val showModel = shows[showID - 1]
 
-        binding.ShowDetailsTitle.text = shows[id].name
-        binding.ShowDetailsDescription.text = shows[id].description
-        binding.ShowDetailsImage.setImageResource(shows[id].imageResourceId)
+        binding.ShowDetailsTitle.text = showModel.name
+        binding.ShowDetailsDescription.text = showModel.description
+        binding.ShowDetailsImage.setImageResource(showModel.imageResourceId)
 
-        binding.writeReview.setOnClickListener{
-            showAddReviewBottomSheet(id)
+        binding.writeReview.setOnClickListener {
+            showAddReviewBottomSheet(showModel)
         }
 
-        if(shows[id].reviews.isEmpty()){
-            binding.emptyStateLabel.isVisible = true
-            binding.showRecyclerView.isVisible = false
-            binding.ratingBarAverage.isVisible = false
-            binding.ratingBarAverageText.isVisible = false
-
-        }else if(reviewAdapter?.itemCount != 0){
-            binding.emptyStateLabel.isVisible = false
-            binding.showRecyclerView.isVisible = true
-            binding.ratingBarAverage.isVisible = true
-            binding.ratingBarAverageText.isVisible = true
-            setAverageRatingAndQuantity(shows[id])
-
+        if(showModel.reviews.isEmpty()){
+            setVisibles(true)
         }
-        initShowsRecycler(id)
+        if (reviewAdapter?.itemCount != 0) {
+            setVisibles(false)
+            setAverageRatingAndQuantity(showModel)
+        }
+        
+        initShowsRecycler(showModel)
 
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
-
-
+        
+    }
+    
+    private fun setVisibles(boolean: Boolean){
+        binding.emptyStateLabel.isVisible = boolean
+        binding.showRecyclerView.isVisible = !boolean
+        binding.ratingBarAverage.isVisible = !boolean
+        binding.ratingBarAverageText.isVisible = !boolean
     }
 
-    private fun initShowsRecycler(id: Int){
+    private fun initShowsRecycler(showModel: ShowsModel) {
 
         binding.showRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        binding.showRecyclerView.adapter = ReviewAdapter(shows[id].reviews, user)
-        reviewAdapter?.setReviews(shows[id].reviews)
+        binding.showRecyclerView.adapter = ReviewAdapter(showModel.reviews, user)
+        reviewAdapter?.setReviews(showModel.reviews)
     }
 
-    private fun showAddReviewBottomSheet(id: Int) {
+    private fun showAddReviewBottomSheet(showModel: ShowsModel) {
         val dialog = BottomSheetDialog(this)
 
         val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
@@ -90,30 +91,25 @@ class ShowDetailsActivity : AppCompatActivity() {
 
         bottomSheetBinding.submitButtonReview.setOnClickListener {
 
-            if(bottomSheetBinding.ratingBar.rating.compareTo(0.0)==0)
-            {
+            if (bottomSheetBinding.ratingBar.rating.equals(0.0f)) {
                 Toast.makeText(this, "Please rate the show.", Toast.LENGTH_SHORT).show()
-            }else{
-                val show = shows[id]
+            } else {
+                val reviewModel = ReviewModel(
+                    bottomSheetBinding.reviewComment.text.toString(),
+                    bottomSheetBinding.ratingBar.rating, R.drawable.super_mario
+                )
 
-                val reviewModel = ReviewModel(bottomSheetBinding.reviewComment.text.toString(),
-                    bottomSheetBinding.ratingBar.rating, R.drawable.super_mario)
+                showModel.addReview(reviewModel)
+                reviewAdapter?.setReviews(showModel.reviews)
 
-                show.addReview(reviewModel)
-                reviewAdapter?.setReviews(show.reviews)
-
-                setAverageRatingAndQuantity(show)
+                setAverageRatingAndQuantity(showModel)
 
                 dialog.dismiss()
 
-                initShowsRecycler(id)
-                
-                if(reviewAdapter?.itemCount != 0) {
+                initShowsRecycler(showModel)
 
-                    binding.emptyStateLabel.isVisible = false
-                    binding.showRecyclerView.isVisible = true
-                    binding.ratingBarAverage.isVisible = true
-                    binding.ratingBarAverageText.isVisible = true
+                if (reviewAdapter?.itemCount != 0) {
+                    setVisibles(false)
                 }
 
             }
@@ -122,10 +118,11 @@ class ShowDetailsActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun setAverageRatingAndQuantity(showsModel: ShowsModel){
+    private fun setAverageRatingAndQuantity(showsModel: ShowsModel) {
 
         val helper = showsModel.reviews.map { it.rating }.toList()
-        binding.ratingBarAverageText.text = "${helper.size} REVIEWS, ${(Math.round(helper.average())*100.0)/100.0} AVERAGE"
+        binding.ratingBarAverageText.text =
+            "${helper.size} REVIEWS, ${(Math.round(helper.average()) * 100.0) / 100.0} AVERAGE"
         binding.ratingBarAverage.rating = (helper.average()).toFloat()
     }
 
