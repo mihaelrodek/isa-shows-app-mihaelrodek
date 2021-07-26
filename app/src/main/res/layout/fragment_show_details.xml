@@ -1,130 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ShowDetailsFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/toolbarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/MyToolbarTheme"
+                    app:navigationIcon="?attr/homeAsUpIndicator" />
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <TextView
+                android:id="@+id/ShowDetailsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:textColor="@color/black"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
+                tools:text="Title" />
+
+            <ImageView
+                android:id="@+id/ShowDetailsImage"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/dark"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ShowDetailsTitle" />
+
+            <TextView
+                android:id="@+id/ShowDetailsDescription"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="Description"
+                app:layout_constraintTop_toBottomOf="@id/ShowDetailsImage" />
+
+            <TextView
+                android:id="@+id/review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/review"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/ShowDetailsDescription" />
+
+            <TextView
+                android:id="@+id/emptyStateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/no_reviews_yet"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/review" />
+
+            <LinearLayout
+                android:id="@+id/linearLayoutRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/review">
+
+                <TextView
+                    android:id="@+id/ratingBarAverageText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/x_reviews_y_average"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    android:id="@+id/ratingBarAverage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:isIndicator="true"
+                    android:visibility="gone" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/showRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    tools:listitem="@layout/item_review"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/toolbarLayout"
+        android:id="@+id/reviewlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/writeReview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/MyToolbarTheme"
-            app:navigationIcon="?attr/homeAsUpIndicator"/>
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="24dp"
+            android:text="@string/write_a_review"
+            app:cornerRadius="40dp" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:id="@+id/ShowDetailsTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/toolbarLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Title"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:layout_marginStart="24dp"
-        android:textColor="@color/black"/>
-
-    <ImageView
-        android:id="@+id/ShowDetailsImage"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:src="@drawable/dark"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ShowDetailsTitle"/>
-
-    <TextView
-        android:id="@+id/ShowDetailsDescription"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:text="Description"
-        app:layout_constraintTop_toBottomOf="@id/ShowDetailsImage"
-        />
-
-    <TextView
-        android:id="@+id/review"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/review"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:textSize="24sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/ShowDetailsDescription"/>
-
-    <TextView
-        android:id="@+id/emptyStateLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:text="@string/no_reviews_yet"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/review"/>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/review"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/ratingBarAverageText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:text="@string/x_reviews_y_average"
-            android:visibility="gone"
-            />
-        <androidx.appcompat.widget.AppCompatRatingBar
-            android:id="@+id/ratingBarAverage"
-            android:isIndicator="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:clickable="false"
-            android:visibility="gone"/>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:id="@+id/showRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            tools:listitem="@layout/item_review"/>
-
-    </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/writeReview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="24dp"
-        android:layout_marginHorizontal="24dp"
-        android:text="@string/write_a_review"
-        app:cornerRadius="40dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
