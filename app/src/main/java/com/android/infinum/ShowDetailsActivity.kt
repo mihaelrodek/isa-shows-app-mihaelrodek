@@ -92,7 +92,7 @@ class ShowDetailsActivity : AppCompatActivity() {
         bottomSheetBinding.submitButtonReview.setOnClickListener {
 
             if (bottomSheetBinding.ratingBar.rating.equals(0.0f)) {
-                Toast.makeText(this, "Please rate the show.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.rate_show), Toast.LENGTH_SHORT).show()
             } else {
                 val reviewModel = ReviewModel(
                     bottomSheetBinding.reviewComment.text.toString(),
