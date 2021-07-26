@@ -29,6 +29,10 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    companion object {
+        private const val USERNAME_SEPARATOR = "@"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -54,9 +58,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkMail(email: String) : Boolean {
 
-        if (!email.contains("@")|| !Patterns.EMAIL_ADDRESS.matcher(email).matches() || email.isEmpty()) {
-            Toast.makeText(this, "email", Toast.LENGTH_SHORT).show()
-            binding.emailInput.error = "Please enter valid e-mail."
+        if (!email.contains(USERNAME_SEPARATOR)|| !Patterns.EMAIL_ADDRESS.matcher(email).matches() || email.isEmpty()) {
+            binding.emailInput.error = getString(R.string.invalid_mail)
             return false
         }else
             binding.emailInput.error= null
@@ -68,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
         if (!password.length?.let { len -> len >= 6 }) {
             println(password)
 
-            binding.passwordInput.error = "Password should be at least 6 characters long."
+            binding.passwordInput.error = getString(R.string.invalid_password)
             return false
         }else
             binding.passwordInput.error= null
