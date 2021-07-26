@@ -22,11 +22,11 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.loginButton.isEnabled = false
+        binding.loginButton.isClickable = false
 
         if (binding.emailInput.editText?.text.toString().isNotEmpty() &&
             binding.passwordInput.editText?.text.toString().isNotEmpty())
-            binding.loginButton.isEnabled = true
+            binding.loginButton.isClickable = true
 
         binding.loginButton.setOnClickListener {
 
