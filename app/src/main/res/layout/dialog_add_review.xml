@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@drawable/bottom_sheet_dialog"
     android:orientation="vertical"
     >
 
@@ -47,26 +47,26 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:progressTint="@color/purple_background" />
+        android:progressTint="@color/purple" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/review_comment"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:textColorHint="@color/purple_background"
+        android:textColorHint="@color/purple"
         app:hintEnabled="true"
-        style="@style/CommentInputLayoutStyle">
+        style="@style/CommentInputLayoutStyle"
+        app:boxStrokeColor="@color/purple">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/review_comment_editor"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textLongMessage"
+            android:layout_height="wrap_content"
             android:hint="@string/comment"
-            android:textColorHint="@color/purple_background"
+            android:textColorHint="@color/purple"
             android:textColor="@color/black"
             />
     </com.google.android.material.textfield.TextInputLayout>

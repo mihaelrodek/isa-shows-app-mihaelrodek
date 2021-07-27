@@ -5,14 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clipToPadding="false"
-    android:padding="8dp">
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="16dp">
 
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/super_mario"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_profile_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,8 +23,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="56dp"
-        android:textColor="@color/purple_background"
+        android:textColor="@color/purple"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/review"
         app:layout_constraintStart_toEndOf="@+id/image"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,6 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/star_rating"
+        android:textColor="@color/purple"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/review"
         app:layout_constraintStart_toEndOf="@id/userName"
         app:layout_constraintEnd_toStartOf="@id/star"
@@ -43,7 +47,7 @@
         android:id="@+id/star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/star"
+        android:src="@drawable/ic_star_full"
         app:layout_constraintStart_toEndOf="@id/starRating"
         app:layout_constraintBottom_toTopOf="@id/review"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,6 +60,8 @@
         android:layout_height="wrap_content"
         android:lineSpacingExtra="8sp"
         android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
