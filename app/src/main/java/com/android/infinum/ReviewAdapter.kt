@@ -19,7 +19,7 @@ class ReviewAdapter(
         viewType: Int
     ): ReviewAdapter.ReviewViewHolder {
 
-        val binding = ItemReviewBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = ItemReviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ReviewViewHolder(binding)
 
     }

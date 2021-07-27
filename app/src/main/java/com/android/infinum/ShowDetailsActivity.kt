@@ -35,8 +35,6 @@ class ShowDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val showID = intent.extras?.getString(EXTRA_SHOW)?.toInt()!!
-
         val sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
         sharedPreferences.edit()
         user = sharedPreferences.getString(getString(R.string.username), USERNAME).toString()
@@ -44,9 +42,11 @@ class ShowDetailsActivity : AppCompatActivity() {
         binding = ActivityShowDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        val showID = intent.extras?.getString(EXTRA_SHOW)?.toInt()!!
         val showModel = shows[showID - 1]
 
-        binding.ShowDetailsTitle.text = showModel.name
+        binding.toolbar.title = showModel.name
         binding.ShowDetailsDescription.text = showModel.description
         binding.ShowDetailsImage.setImageResource(showModel.imageResourceId)
 
@@ -54,11 +54,9 @@ class ShowDetailsActivity : AppCompatActivity() {
             showAddReviewBottomSheet(showModel)
         }
 
-        if(showModel.reviews.isEmpty()){
-            setVisibles(true)
-        }
+        setVisibles(showModel.reviews.isNullOrEmpty())
+
         if (reviewAdapter?.itemCount != 0) {
-            setVisibles(false)
             setAverageRatingAndQuantity(showModel)
         }
         
@@ -68,11 +66,11 @@ class ShowDetailsActivity : AppCompatActivity() {
         
     }
     
-    private fun setVisibles(boolean: Boolean){
-        binding.emptyStateLabel.isVisible = boolean
-        binding.showRecyclerView.isVisible = !boolean
-        binding.ratingBarAverage.isVisible = !boolean
-        binding.ratingBarAverageText.isVisible = !boolean
+    private fun setVisibles(bool: Boolean){
+        binding.emptyStateLabel.isVisible = bool
+        binding.showRecyclerView.isVisible = bool.not()
+        binding.ratingBarAverageText.isVisible = bool.not()
+        binding.ratingBarAverage.isVisible = bool.not()
     }
 
     private fun initShowsRecycler(showModel: ShowsModel) {
