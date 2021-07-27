@@ -6,11 +6,15 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.infinum.ShowData.shows
 import com.android.infinum.databinding.ActivityShowDetailsBinding
 import com.android.infinum.databinding.DialogAddReviewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+
 
 class ShowDetailsActivity : AppCompatActivity() {
 
@@ -76,6 +80,9 @@ class ShowDetailsActivity : AppCompatActivity() {
     private fun initShowsRecycler(showModel: ShowsModel) {
 
         binding.showRecyclerView.layoutManager = LinearLayoutManager(this)
+        val dividerItemDecoration: ItemDecoration =
+            DividerItemDecorator(ContextCompat.getDrawable(baseContext, R.drawable.divider)!!)
+        binding.showRecyclerView.addItemDecoration(dividerItemDecoration)
 
         binding.showRecyclerView.adapter = ReviewAdapter(showModel.reviews, user)
         reviewAdapter?.setReviews(showModel.reviews)
