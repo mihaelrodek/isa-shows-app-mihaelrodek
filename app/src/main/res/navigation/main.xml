@@ -11,7 +11,9 @@
 
         <action
             android:id="@+id/action_first_to_second"
-            app:destination="@id/second"/>
+            app:destination="@id/second"
+            app:popUpTo="@id/first"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
@@ -29,9 +31,7 @@
 
         <action
             android:id="@+id/action_second_to_first"
-            app:destination="@id/first"
-            app:popUpTo="@id/first"
-            app:popUpToInclusive="true"/>
+            app:destination="@id/first"/>
     </fragment>
 
     <fragment

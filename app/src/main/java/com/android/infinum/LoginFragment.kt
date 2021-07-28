@@ -60,7 +60,7 @@ class LoginFragment : Fragment() {
             editor.apply {
                 putString(
                     getString(R.string.username),
-                    binding.emailInput.editText?.text.toString().substringBefore("@")
+                    binding.emailInput.editText?.text.toString().substringBefore(AT_SEPARATOR)
                 )
             }.apply()
 
