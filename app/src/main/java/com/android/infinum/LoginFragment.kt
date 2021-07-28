@@ -4,14 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
-import com.android.infinum.databinding.ActivityLoginBinding
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.android.infinum.databinding.FragmentLoginBinding
 
 
-class LoginActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityLoginBinding
+class LoginFragment : Fragment() {
 
     companion object {
         private const val AT_SEPARATOR = "@"
@@ -19,11 +22,22 @@ class LoginActivity : AppCompatActivity() {
         private const val SHARED_PREFS = "sharedPrefs"
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var _binding: FragmentLoginBinding? = null
 
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.passwordInputEditor.doOnTextChanged { text, start, before, count ->
             binding.loginButton.isEnabled =
@@ -37,25 +51,23 @@ class LoginActivity : AppCompatActivity() {
                         checkMail(binding.emailInput.editText?.text.toString().trim())
         }
 
-
         binding.loginButton.setOnClickListener {
 
-            val sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
+
+            val sharedPreferences = this.requireActivity()
+                .getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
             val editor = sharedPreferences.edit()
             editor.apply {
                 putString(
                     getString(R.string.username),
-                    binding.emailInput.editText?.text.toString().substringBefore(
-                        AT_SEPARATOR
-                    )
+                    binding.emailInput.editText?.text.toString().substringBefore(AT_SEPARATOR)
                 )
             }.apply()
 
-            val intent = Intent(this, ShowsActivity::class.java)
-            startActivity(intent)
+            findNavController().navigate(R.id.action_first_to_second)
         }
-    }
 
+    }
 
     private fun checkMail(email: String): Boolean {
 

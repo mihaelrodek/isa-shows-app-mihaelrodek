@@ -1,54 +1,61 @@
 package com.android.infinum
 
 import android.app.Activity
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.infinum.ShowData.shows
-import com.android.infinum.databinding.ActivityShowDetailsBinding
-import com.android.infinum.databinding.DialogAddReviewBinding
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.android.infinum.databinding.DialogAddReviewBinding
+import com.android.infinum.databinding.FragmentShowDetailsBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
-
-class ShowDetailsActivity : AppCompatActivity() {
+class ShowDetailsFragment : Fragment() {
 
     companion object {
         private const val EXTRA_SHOW = "EXTRA_SHOW"
-        private const val USERNAME = "username"
         private const val SHARED_PREFS = "sharedPrefs"
+        private const val USERNAME = "username"
 
-        fun buildIntent(activity: Activity, showModel: String): Intent {
-            val intent = Intent(activity, ShowDetailsActivity::class.java)
-            intent.putExtra(EXTRA_SHOW, showModel)
-            return intent
-        }
     }
 
     private var user: String = ""
 
-    private lateinit var binding: ActivityShowDetailsBinding
+    private var _binding: FragmentShowDetailsBinding? = null
+
+    private val binding get() = _binding!!
 
     private var reviewAdapter: ReviewAdapter? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    val args: ShowDetailsFragmentArgs by navArgs()
 
-        val sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val showID = args.showID
+        val showModel = ShowData.shows[showID - 1]
+
+        val sharedPreferences =
+            this.requireActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
         sharedPreferences.edit()
         user = sharedPreferences.getString(getString(R.string.username), USERNAME).toString()
-
-        binding = ActivityShowDetailsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-
-        val showID = intent.extras?.getString(EXTRA_SHOW)?.toInt()!!
-        val showModel = shows[showID - 1]
 
         binding.toolbar.title = showModel.name
         binding.ShowDetailsDescription.text = showModel.description
@@ -63,14 +70,15 @@ class ShowDetailsActivity : AppCompatActivity() {
         if (reviewAdapter?.itemCount != 0) {
             setAverageRatingAndQuantity(showModel)
         }
-        
+
         initShowsRecycler(showModel)
 
-        binding.toolbar.setNavigationOnClickListener { onBackPressed() }
-        
+        binding.toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
-    
-    private fun setVisibles(bool: Boolean){
+
+    private fun setVisibles(bool: Boolean) {
         binding.emptyStateLabel.isVisible = bool
         binding.showRecyclerView.isVisible = bool.not()
         binding.ratingBarAverageText.isVisible = bool.not()
@@ -79,9 +87,14 @@ class ShowDetailsActivity : AppCompatActivity() {
 
     private fun initShowsRecycler(showModel: ShowsModel) {
 
-        binding.showRecyclerView.layoutManager = LinearLayoutManager(this)
-        val dividerItemDecoration: ItemDecoration =
-            DividerItemDecorator(ContextCompat.getDrawable(baseContext, R.drawable.divider)!!)
+        binding.showRecyclerView.layoutManager = LinearLayoutManager(context)
+        val dividerItemDecoration: RecyclerView.ItemDecoration =
+            DividerItemDecorator(context?.let {
+                ContextCompat.getDrawable(
+                    it,
+                    R.drawable.divider
+                )
+            }!!)
         binding.showRecyclerView.addItemDecoration(dividerItemDecoration)
 
         binding.showRecyclerView.adapter = ReviewAdapter(showModel.reviews, user)
@@ -89,15 +102,15 @@ class ShowDetailsActivity : AppCompatActivity() {
     }
 
     private fun showAddReviewBottomSheet(showModel: ShowsModel) {
-        val dialog = BottomSheetDialog(this)
+        val dialog = context?.let { BottomSheetDialog(it) }
 
         val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
-        dialog.setContentView(bottomSheetBinding.root)
+        dialog?.setContentView(bottomSheetBinding.root)
 
         bottomSheetBinding.submitButtonReview.setOnClickListener {
 
             if (bottomSheetBinding.ratingBar.rating.equals(0.0f)) {
-                Toast.makeText(this, getString(R.string.rate_show), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.rate_show), Toast.LENGTH_SHORT).show()
             } else {
                 val reviewModel = ReviewModel(
                     bottomSheetBinding.reviewCommentEditor.text.toString(),
@@ -109,7 +122,7 @@ class ShowDetailsActivity : AppCompatActivity() {
 
                 setAverageRatingAndQuantity(showModel)
 
-                dialog.dismiss()
+                dialog?.dismiss()
 
                 initShowsRecycler(showModel)
 
@@ -120,18 +133,17 @@ class ShowDetailsActivity : AppCompatActivity() {
             }
         }
         bottomSheetBinding.cancelButton.setOnClickListener {
-            dialog.dismiss()
+            dialog?.dismiss()
         }
 
-        dialog.show()
+        dialog?.show()
     }
 
     private fun setAverageRatingAndQuantity(showsModel: ShowsModel) {
-
-        val helper = showsModel.reviews.map { it.rating }.toList()
+        val helper = showsModel.reviews.map { it.rating }.average()
         binding.ratingBarAverageText.text =
-            "${helper.size} REVIEWS, ${(Math.round(helper.average()) * 100.0) / 100.0} AVERAGE"
-        binding.ratingBarAverage.rating = (helper.average()).toFloat()
+            "${showsModel.reviews.size} REVIEWS, ${(Math.round(helper) * 100.0) / 100.0} AVERAGE"
+        binding.ratingBarAverage.rating = helper.toFloat()
     }
 
 

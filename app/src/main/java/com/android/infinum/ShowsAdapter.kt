@@ -36,7 +36,7 @@ class ShowsAdapter(
         fun bind(item: ShowsModel) {
 
             binding.apply {
-                showName.text= item.name
+                showName.text = item.name
                 showItemImage.setImageResource(item.imageResourceId)
                 showDescription.text = item.description
             }
