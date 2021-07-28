@@ -11,7 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.infinum.ShowData.shows
+import com.android.infinum.databinding.DialogUserBinding
 import com.android.infinum.databinding.FragmentShowsBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 
 class ShowsFragment : Fragment() {
@@ -40,14 +42,15 @@ class ShowsFragment : Fragment() {
 
         initShowsRecycler()
 
+        binding.userPhoto.setOnClickListener {
+            addProfileBottomSheet()
+        }
+
         binding.refresh.setOnClickListener {
             binding.emptyStateLabel.isVisible = !binding.emptyStateLabel.isVisible
             binding.showsRecyclerView.isVisible = !binding.emptyStateLabel.isVisible
         }
 
-        binding.logoutButton.setOnClickListener {
-            findNavController().navigate(R.id.action_second_to_first)
-        }
     }
 
     private fun initShowsRecycler() {
@@ -59,6 +62,26 @@ class ShowsFragment : Fragment() {
             findNavController().navigate(action)
         }
         showsAdapter?.setItems(shows)
+    }
+
+    private fun addProfileBottomSheet(){
+        val dialog = context?.let { BottomSheetDialog(it) }
+
+        val bottomSheetDialog = DialogUserBinding.inflate(layoutInflater)
+        dialog?.setContentView(bottomSheetDialog.root)
+
+        bottomSheetDialog.dialogChangePhoto.setOnClickListener {
+
+        }
+
+        bottomSheetDialog.dialogLogout.setOnClickListener {
+            dialog?.dismiss()
+            findNavController().navigate(R.id.action_second_to_first)
+        }
+
+        dialog?.show()
+
+
     }
 
 }
