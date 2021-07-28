@@ -22,6 +22,8 @@ class ShowDetailsFragment : Fragment() {
 
     companion object {
         private const val EXTRA_SHOW = "EXTRA_SHOW"
+        private const val SHARED_PREFS = "sharedPrefs"
+        private const val USERNAME = "username"
 
     }
 
@@ -51,9 +53,9 @@ class ShowDetailsFragment : Fragment() {
         val showModel = ShowData.shows[showID - 1]
 
         val sharedPreferences =
-            this.requireActivity().getSharedPreferences("sharedPrefs", MODE_PRIVATE)
+            this.requireActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
         sharedPreferences.edit()
-        user = sharedPreferences.getString(getString(R.string.username), "username").toString()
+        user = sharedPreferences.getString(getString(R.string.username), USERNAME).toString()
 
         binding.toolbar.title = showModel.name
         binding.ShowDetailsDescription.text = showModel.description
@@ -108,7 +110,7 @@ class ShowDetailsFragment : Fragment() {
         bottomSheetBinding.submitButtonReview.setOnClickListener {
 
             if (bottomSheetBinding.ratingBar.rating.equals(0.0f)) {
-                Toast.makeText(context, "Please rate the show.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.rate_show), Toast.LENGTH_SHORT).show()
             } else {
                 val reviewModel = ReviewModel(
                     bottomSheetBinding.reviewCommentEditor.text.toString(),
@@ -138,10 +140,10 @@ class ShowDetailsFragment : Fragment() {
     }
 
     private fun setAverageRatingAndQuantity(showsModel: ShowsModel) {
-        val helper = showsModel.reviews.map { it.rating }.toList()
+        val helper = showsModel.reviews.map { it.rating }.average()
         binding.ratingBarAverageText.text =
-            "${helper.size} REVIEWS, ${(Math.round(helper.average()) * 100.0) / 100.0} AVERAGE"
-        binding.ratingBarAverage.rating = (helper.average()).toFloat()
+            "${showsModel.reviews.size} REVIEWS, ${(Math.round(helper) * 100.0) / 100.0} AVERAGE"
+        binding.ratingBarAverage.rating = helper.toFloat()
     }
 
 
