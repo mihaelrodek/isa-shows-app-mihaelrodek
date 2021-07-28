@@ -18,4 +18,5 @@
     <string name="rate_show">Please rate the show.</string>
     <string name="comment">Comment</string>
     <string name="description">Description</string>
+    <string name="remember_me">Remember me</string>
 </resources>
