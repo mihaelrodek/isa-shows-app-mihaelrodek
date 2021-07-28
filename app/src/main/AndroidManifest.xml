@@ -21,6 +21,10 @@
 
         <activity
             android:name=".WelcomeActivity"/>
+        <activity
+            android:name=".ShowsActivity"/>
+        <activity
+            android:name=".ShowDetailsActivity"/>
 
     </application>
 
