@@ -10,5 +10,12 @@
     <string name="x_reviews_y_average">X REVIEWS, Y AVERAGE</string>
     <string name="star_rating">5</string>
     <string name="username">Username</string>
+    <string name="no_shows">Your shows are not showing. Get it?</string>
+    <string name="welcome">Welcome</string>
+    <string name="password">Password</string>
+    <string name="invalid_mail">Please enter valid e-mail.</string>
+    <string name="invalid_password">Password should be at least 6 characters long.</string>
+    <string name="rate_show">Please rate the show.</string>
+    <string name="comment">Comment</string>
     <string name="description">Description</string>
 </resources>

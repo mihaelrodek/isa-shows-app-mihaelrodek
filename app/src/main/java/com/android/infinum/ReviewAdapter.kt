@@ -1,10 +1,7 @@
 package com.android.infinum
 
-import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.android.infinum.databinding.ItemReviewBinding
 
@@ -19,7 +16,7 @@ class ReviewAdapter(
         viewType: Int
     ): ReviewAdapter.ReviewViewHolder {
 
-        val binding = ItemReviewBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = ItemReviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ReviewViewHolder(binding)
 
     }
