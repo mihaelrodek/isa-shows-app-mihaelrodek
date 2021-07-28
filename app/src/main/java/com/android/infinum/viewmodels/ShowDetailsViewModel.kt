@@ -1,8 +1,9 @@
-package com.android.infinum
+package com.android.infinum.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.android.infinum.models.ReviewModel
 
 class ShowDetailsViewModel :ViewModel() {
 

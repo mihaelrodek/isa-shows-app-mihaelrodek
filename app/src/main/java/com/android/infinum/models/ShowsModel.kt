@@ -1,4 +1,4 @@
-package com.android.infinum
+package com.android.infinum.models
 
 import androidx.annotation.DrawableRes
 

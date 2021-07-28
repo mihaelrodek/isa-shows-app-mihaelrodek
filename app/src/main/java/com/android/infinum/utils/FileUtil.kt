@@ -1,4 +1,4 @@
-package com.android.infinum
+package com.android.infinum.utils
 
 import android.content.Context
 import android.graphics.Bitmap

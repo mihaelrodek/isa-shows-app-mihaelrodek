@@ -1,16 +1,15 @@
-package com.android.infinum
+package com.android.infinum.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.android.infinum.R
 import com.android.infinum.databinding.FragmentLoginBinding
 
 
@@ -66,7 +65,6 @@ class LoginFragment : Fragment() {
 
             findNavController().navigate(R.id.action_first_to_second)
         }
-
     }
 
     private fun checkMail(email: String): Boolean {

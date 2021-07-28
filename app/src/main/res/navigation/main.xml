@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/login"
-        android:name="com.android.infinum.LoginFragment"
+        android:name="com.android.infinum.fragments.LoginFragment"
         tools:layout="@layout/fragment_login">
 
         <action
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/shows"
-        android:name="com.android.infinum.ShowsFragment"
+        android:name="com.android.infinum.fragments.ShowsFragment"
         tools:layout="@layout/fragment_shows">
 
         <argument
@@ -36,7 +36,7 @@
 
     <fragment
         android:id="@+id/show_details"
-        android:name="com.android.infinum.ShowDetailsFragment"
+        android:name="com.android.infinum.fragments.ShowDetailsFragment"
         tools:layout="@layout/fragment_show_details">
 
         <argument

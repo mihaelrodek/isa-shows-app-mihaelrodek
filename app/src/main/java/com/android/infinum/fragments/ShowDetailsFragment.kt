@@ -1,8 +1,6 @@
-package com.android.infinum
+package com.android.infinum.fragments
 
-import android.app.Activity
 import android.content.Context.MODE_PRIVATE
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +12,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.infinum.*
+import com.android.infinum.adapters.ReviewAdapter
 import com.android.infinum.databinding.DialogAddReviewBinding
 import com.android.infinum.databinding.FragmentShowDetailsBinding
+import com.android.infinum.models.ReviewModel
+import com.android.infinum.models.ShowsModel
+import com.android.infinum.utils.DividerItemDecorator
+import com.android.infinum.utils.ShowData
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ShowDetailsFragment : Fragment() {
@@ -35,7 +39,7 @@ class ShowDetailsFragment : Fragment() {
 
     private var reviewAdapter: ReviewAdapter? = null
 
-    val args: ShowDetailsFragmentArgs by navArgs()
+    val args: com.android.infinum.ShowDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,

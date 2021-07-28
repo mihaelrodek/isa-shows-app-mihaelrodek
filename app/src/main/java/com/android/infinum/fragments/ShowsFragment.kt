@@ -1,7 +1,5 @@
-package com.android.infinum
+package com.android.infinum.fragments
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +8,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.infinum.ShowData.shows
+import com.android.infinum.R
+import com.android.infinum.utils.ShowData.shows
+import com.android.infinum.adapters.ShowsAdapter
 import com.android.infinum.databinding.DialogUserBinding
 import com.android.infinum.databinding.FragmentShowsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -33,6 +33,7 @@ class ShowsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         _binding = FragmentShowsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -50,7 +51,6 @@ class ShowsFragment : Fragment() {
             binding.emptyStateLabel.isVisible = !binding.emptyStateLabel.isVisible
             binding.showsRecyclerView.isVisible = !binding.emptyStateLabel.isVisible
         }
-
     }
 
     private fun initShowsRecycler() {
@@ -58,13 +58,14 @@ class ShowsFragment : Fragment() {
         binding.showsRecyclerView.layoutManager = LinearLayoutManager(context)
 
         binding.showsRecyclerView.adapter = ShowsAdapter(shows) { item ->
-            val action = ShowsFragmentDirections.actionSecondToThird(item.toInt())
+            val action =
+                com.android.infinum.ShowsFragmentDirections.actionSecondToThird(item.toInt())
             findNavController().navigate(action)
         }
         showsAdapter?.setItems(shows)
     }
 
-    private fun addProfileBottomSheet(){
+    private fun addProfileBottomSheet() {
         val dialog = context?.let { BottomSheetDialog(it) }
 
         val bottomSheetDialog = DialogUserBinding.inflate(layoutInflater)
@@ -80,8 +81,5 @@ class ShowsFragment : Fragment() {
         }
 
         dialog?.show()
-
-
     }
-
 }
