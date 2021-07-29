@@ -11,9 +11,12 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.android.infinum.R
 import com.android.infinum.databinding.FragmentLoginBinding
+import com.android.infinum.viewmodels.LoginViewModel
+import com.android.infinum.viewmodels.RegistrationViewModel
 
 
 class LoginFragment : Fragment() {
@@ -32,7 +35,9 @@ class LoginFragment : Fragment() {
 
     private var rememberMe = false
 
-    private lateinit var prefs : SharedPreferences
+    private lateinit var prefs: SharedPreferences
+
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,28 +75,39 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_login_to_shows)
         }
 
-        if(registered) {
+        if (registered) {
             binding.registerButton.isVisible = !registered
             binding.loginText.text = getString(R.string.registere_successful)
         }
 
+        viewModel.getLoginLiveData()
+            .observe(this.viewLifecycleOwner) { isLogged ->
+                if (isLogged) {
+                    Toast.makeText(context, "USPJEŠABN LOGIN", Toast.LENGTH_SHORT).show()
 
-        binding.loginButton.setOnClickListener {
+                    val sharedPreferences = this.requireActivity()
+                        .getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.apply {
+                        putString(
+                            getString(R.string.username),
+                            binding.emailInput.editText?.text.toString()
+                        )
+                        putBoolean("RememberMe", binding.rememberMe.isChecked)
+                    }.apply()
 
-            val sharedPreferences = this.requireActivity()
-                .getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            editor.apply {
-                putString(
-                    getString(R.string.username),
-                    binding.emailInput.editText?.text.toString()
-                )
-                putBoolean("RememberMe", binding.rememberMe.isChecked)
-            }.apply()
+                    findNavController().navigate(R.id.action_login_to_shows)
+                } else {
+                    Toast.makeText(context, "NIJE USPJEŠNA REGISTRACIJA", Toast.LENGTH_SHORT).show()
+                }
+            }
 
-            findNavController().navigate(R.id.action_login_to_shows)
+        binding.apply {
+
+            binding.loginButton.setOnClickListener {
+                viewModel.login(binding.emailInputEditor.text.toString(),binding.passwordInputEditor.text.toString())
+            }
         }
-
         binding.registerButton.setOnClickListener {
             findNavController().navigate(R.id.action_login_to_register)
         }
@@ -99,7 +115,7 @@ class LoginFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        with (prefs.edit()) {
+        with(prefs.edit()) {
             putBoolean("reg", false)
             apply()
         }
