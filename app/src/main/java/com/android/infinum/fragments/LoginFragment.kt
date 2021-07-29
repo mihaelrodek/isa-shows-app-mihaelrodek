@@ -1,12 +1,14 @@
 package com.android.infinum.fragments
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -25,6 +27,12 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
 
     private val binding get() = _binding!!
+
+    private var registered = false
+
+    private var rememberMe = false
+
+    private lateinit var prefs : SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,12 +59,22 @@ class LoginFragment : Fragment() {
                         checkMail(binding.emailInput.editText?.text.toString().trim())
         }
 
-        val prefs = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        val rememberMe = prefs.getBoolean("showSeen", false)
+        prefs = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val edit = prefs.edit()
+        edit.apply {
+            rememberMe = prefs.getBoolean("showSeen", false)
+            registered = prefs.getBoolean("reg", false)
+        }.apply()
 
         if (rememberMe) {
-            findNavController().navigate(R.id.action_first_to_second)
+            findNavController().navigate(R.id.action_login_to_shows)
         }
+
+        if(registered) {
+            binding.registerButton.isVisible = !registered
+            binding.loginText.text = getString(R.string.registere_successful)
+        }
+
 
         binding.loginButton.setOnClickListener {
 
@@ -71,7 +89,19 @@ class LoginFragment : Fragment() {
                 putBoolean("RememberMe", binding.rememberMe.isChecked)
             }.apply()
 
-            findNavController().navigate(R.id.action_first_to_second)
+            findNavController().navigate(R.id.action_login_to_shows)
+        }
+
+        binding.registerButton.setOnClickListener {
+            findNavController().navigate(R.id.action_login_to_register)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        with (prefs.edit()) {
+            putBoolean("reg", false)
+            apply()
         }
     }
 

@@ -100,7 +100,6 @@ class ShowDetailsFragment : Fragment() {
         binding.showRecyclerView.isVisible = bool.not()
         binding.ratingBarAverageText.isVisible = bool.not()
         binding.ratingBarAverage.isVisible = bool.not()
-        viewModel.initReviews(showModel)
     }
 
     private fun initShowsRecycler(showModel: ShowsModel) {
@@ -134,7 +133,7 @@ class ShowDetailsFragment : Fragment() {
                     bottomSheetBinding.ratingBar.rating, R.drawable.super_mario
                 )
 
-                viewModel.addReview(showModel, reviewModel)
+                //viewModel.addReview(showModel, reviewModel)
                 updateItems(showModel)
 
                 setAverageRatingAndQuantity(showModel)

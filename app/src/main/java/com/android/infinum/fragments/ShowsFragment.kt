@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -116,7 +115,7 @@ class ShowsFragment : Fragment() {
         binding.refresh.setOnClickListener {
             binding.emptyStateLabel.isVisible = !binding.emptyStateLabel.isVisible
             binding.showsRecyclerView.isVisible = !binding.emptyStateLabel.isVisible
-            viewModel.initShows()
+            //viewModel.initShows()
         }
     }
 
@@ -125,7 +124,7 @@ class ShowsFragment : Fragment() {
         binding.showsRecyclerView.layoutManager = LinearLayoutManager(context)
 
         binding.showsRecyclerView.adapter = ShowsAdapter(shows) { item ->
-            val action = ShowsFragmentDirections.actionSecondToThird(item.toInt())
+            val action = ShowsFragmentDirections.actionSshowsToShowdetails(item.toInt())
             findNavController().navigate(action)
         }
     }
@@ -150,9 +149,10 @@ class ShowsFragment : Fragment() {
             dialog?.dismiss()
             with (sharedPref.edit()) {
                 putBoolean("showSeen", false)
+                putBoolean("reg", false)
                 apply()
             }
-            findNavController().navigate(R.id.action_second_to_first)
+            findNavController().navigate(R.id.action_shows_to_login)
         }
 
         dialog?.show()

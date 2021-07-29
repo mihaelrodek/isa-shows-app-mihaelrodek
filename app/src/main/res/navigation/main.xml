@@ -10,8 +10,14 @@
         tools:layout="@layout/fragment_login">
 
         <action
-            android:id="@+id/action_first_to_second"
+            android:id="@+id/action_login_to_shows"
             app:destination="@id/shows"
+            app:popUpTo="@id/login"
+            app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/registration"
             app:popUpTo="@id/login"
             app:popUpToInclusive="true"/>
     </fragment>
@@ -26,11 +32,11 @@
             app:argType="integer"/>
 
         <action
-            android:id="@+id/action_second_to_third"
+            android:id="@+id/action_sshows_to_showdetails"
             app:destination="@id/show_details"/>
 
         <action
-            android:id="@+id/action_second_to_first"
+            android:id="@+id/action_shows_to_login"
             app:destination="@id/login"/>
     </fragment>
 
@@ -42,6 +48,20 @@
         <argument
             android:name="showID"
             app:argType="integer"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/registration"
+        android:name="com.android.infinum.fragments.RegisterFragment"
+        tools:layout="@layout/fragment_register">
+
+        <action
+            android:id="@+id/action_registration_to_login"
+            app:destination="@id/login"
+            app:popUpTo="@id/login"
+            app:popUpToInclusive="true"
+            />
 
     </fragment>
 </navigation>
