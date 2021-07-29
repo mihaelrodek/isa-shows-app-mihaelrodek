@@ -31,6 +31,10 @@ class ShowDetailsViewModel : ViewModel() {
         return reviewsLiveData
     }
 
+    fun getAddReviewsLiveData(): LiveData<Boolean> {
+        return addReviewLiveData
+    }
+
     fun getShowLiveData(): LiveData<ShowResponse> {
         return showLiveData
     }
@@ -63,6 +67,21 @@ class ShowDetailsViewModel : ViewModel() {
 
             override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
                 addReviewLiveData.value = false
+            }
+        })
+    }
+
+    fun getShow(showId: String){
+        RetrofitClient.retrofit.displayShow(showId).enqueue(object : Callback<ShowResponse>{
+            override fun onResponse(
+                call: Call<ShowResponse>,
+                response: Response<ShowResponse>
+            ) {
+                showLiveData.value = response.body()
+            }
+
+            override fun onFailure(call: Call<ShowResponse>, t: Throwable) {
+                showLiveData.value = null
             }
         })
     }

@@ -73,8 +73,6 @@ class LoginFragment : Fragment() {
             email = prefs.getString(getString(R.string.username),"username").toString()
         }.apply()
 
-        Toast.makeText(context, email, Toast.LENGTH_SHORT).show()
-
         if (rememberMe) {
             findNavController().navigate(R.id.action_login_to_shows)
         }
@@ -87,7 +85,6 @@ class LoginFragment : Fragment() {
         viewModel.getLoginLiveData()
             .observe(this.viewLifecycleOwner) { isLogged ->
                 if (isLogged) {
-                    Toast.makeText(context, "USPJEŠABN LOGIN", Toast.LENGTH_SHORT).show()
 
                     val sharedPreferences = this.requireActivity()
                         .getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
@@ -102,7 +99,7 @@ class LoginFragment : Fragment() {
 
                     findNavController().navigate(R.id.action_login_to_shows)
                 } else {
-                    Toast.makeText(context, "NIJE USPJEŠNA REGISTRACIJA", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Log in failed", Toast.LENGTH_SHORT).show()
                 }
             }
 

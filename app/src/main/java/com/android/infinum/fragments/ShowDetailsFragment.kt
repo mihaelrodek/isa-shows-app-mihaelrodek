@@ -1,6 +1,8 @@
 package com.android.infinum.fragments
 
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.content.LocusId
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +22,7 @@ import com.android.infinum.databinding.DialogAddReviewBinding
 import com.android.infinum.databinding.FragmentShowDetailsBinding
 import com.android.infinum.models.ReviewModel
 import com.android.infinum.models.ShowsModel
+import com.android.infinum.models.responses.ReviewResponse
 import com.android.infinum.utils.DividerItemDecorator
 import com.android.infinum.utils.ShowData
 import com.android.infinum.viewmodels.ShowDetailsViewModel
@@ -66,43 +70,54 @@ class ShowDetailsFragment : Fragment() {
         sharedPreferences.edit()
         user = sharedPreferences.getString(getString(R.string.username), USERNAME).toString()
 
-        binding.toolbar.title = showModel.name
-        binding.ShowDetailsDescription.text = showModel.description
-        binding.ShowDetailsImage.setImageResource(showModel.imageResourceId)
+        viewModel.getShowLiveData().observe(this.viewLifecycleOwner){ show ->
+            if(show != null){
+                binding.ratingBarAverageText.text = "${show.noOfReviews} Reviews, ${show.averageRating} Average"
+                binding.ratingBarAverage.rating = show.averageRating.toFloat()
+                binding.toolbar.title = show.title
+                binding.ShowDetailsDescription.text = show.description
+                binding.ShowDetailsImage.setImageResource(R.drawable.daredevil)
+            }else
+            Toast.makeText(context, "Fetching tv shows failed", Toast. LENGTH_SHORT). show()
+        }
 
-        viewModel.getReviewsLiveData().observe(requireActivity(), { reviews ->
-            updateItems(showModel)
-        })
+        viewModel.getReviewsLiveData().observe(this.viewLifecycleOwner) { review ->
+            if (!review.isNullOrEmpty()) {
+                setVisibles(false)
+                initShowsRecycler(review)
+            } else if(review.isEmpty()){
+                setVisibles(false)
+            }else
+                Toast.makeText(context, "Fetching reviews failed", Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.getAddReviewsLiveData().observe(this.viewLifecycleOwner){ success->
+            if(success){
+                viewModel.getShow(args.showID.toString())
+                viewModel.getReviews(args.showID)
+            }else Toast.makeText(context, "Adding review failed", Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.getShow(args.showID.toString())
+        viewModel.getReviews(args.showID)
 
         binding.writeReview.setOnClickListener {
-            showAddReviewBottomSheet(showModel)
+            showAddReviewBottomSheet(showID)
         }
-
-        setVisibles(showModel.reviews.isNullOrEmpty(),showModel)
-
-        if (reviewAdapter?.itemCount != 0) {
-            setAverageRatingAndQuantity(showModel)
-        }
-
-        initShowsRecycler(showModel)
 
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
     }
 
-    private fun updateItems(showModel: ShowsModel) {
-        reviewAdapter?.setReviews(showModel.reviews)
-    }
-
-    private fun setVisibles(bool: Boolean, showModel: ShowsModel) {
+    private fun setVisibles(bool: Boolean) {
         binding.emptyStateLabel.isVisible = bool
         binding.showRecyclerView.isVisible = bool.not()
         binding.ratingBarAverageText.isVisible = bool.not()
         binding.ratingBarAverage.isVisible = bool.not()
     }
 
-    private fun initShowsRecycler(showModel: ShowsModel) {
+    private fun initShowsRecycler(reviewResponses: List<ReviewResponse>) {
 
         binding.showRecyclerView.layoutManager = LinearLayoutManager(context)
         val dividerItemDecoration: RecyclerView.ItemDecoration =
@@ -113,11 +128,11 @@ class ShowDetailsFragment : Fragment() {
                 )
             }!!)
         binding.showRecyclerView.addItemDecoration(dividerItemDecoration)
-        binding.showRecyclerView.adapter = ReviewAdapter(showModel.reviews, user.substringBefore(
+        binding.showRecyclerView.adapter = ReviewAdapter(reviewResponses, user.substringBefore(
             AT_SEPARATOR))
     }
 
-    private fun showAddReviewBottomSheet(showModel: ShowsModel) {
+    private fun showAddReviewBottomSheet(showId: Int) {
         val dialog = context?.let { BottomSheetDialog(it) }
 
         val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
@@ -128,38 +143,16 @@ class ShowDetailsFragment : Fragment() {
             if (bottomSheetBinding.ratingBar.rating.equals(0.0f)) {
                 Toast.makeText(context, getString(R.string.rate_show), Toast.LENGTH_SHORT).show()
             } else {
-                val reviewModel = ReviewModel(
-                    bottomSheetBinding.reviewCommentEditor.text.toString(),
-                    bottomSheetBinding.ratingBar.rating, R.drawable.super_mario
-                )
 
-                //viewModel.addReview(showModel, reviewModel)
-                updateItems(showModel)
-
-                setAverageRatingAndQuantity(showModel)
+                viewModel.addReview(showId,bottomSheetBinding.reviewCommentEditor.text.toString(),bottomSheetBinding.ratingBar.rating.toInt())
+                //viewModel.getShow(showId.toString())
 
                 dialog?.dismiss()
-
-                initShowsRecycler(showModel)
-
-                if (reviewAdapter?.itemCount != 0) {
-                    setVisibles(false,showModel)
-                }
-
             }
         }
         bottomSheetBinding.cancelButton.setOnClickListener {
             dialog?.dismiss()
         }
-
         dialog?.show()
     }
-
-    private fun setAverageRatingAndQuantity(showsModel: ShowsModel) {
-        binding.ratingBarAverageText.text =
-            "${viewModel.countReviews(showsModel)} REVIEWS, ${(Math.round(viewModel.getAverage(showsModel)) * 100.0) / 100.0} AVERAGE"
-        binding.ratingBarAverage.rating = viewModel.getAverage(showsModel)
-    }
-
-
 }

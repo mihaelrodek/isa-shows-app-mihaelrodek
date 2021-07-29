@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.infinum.databinding.ItemReviewBinding
 import com.android.infinum.models.ReviewModel
+import com.android.infinum.models.responses.ReviewResponse
 
 class ReviewAdapter(
-    private var items: List<ReviewModel>,
+    private var items: List<ReviewResponse>,
     private var user: String
 ) : RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
 
@@ -21,14 +22,14 @@ class ReviewAdapter(
     }
 
     override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items.get(position))
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-    fun setReviews(reviews: List<ReviewModel>) {
+    fun setReviews(reviews: List<ReviewResponse>) {
         items = reviews
         notifyDataSetChanged()
     }
@@ -37,9 +38,9 @@ class ReviewAdapter(
     inner class ReviewViewHolder(private val binding: ItemReviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: ReviewModel) {
+        fun bind(item: ReviewResponse) {
             binding.userName.text = user
-            binding.review.text = item.review
+            binding.review.text = item.comment
             binding.starRating.text = item.rating.toString()
         }
     }
