@@ -70,10 +70,10 @@ class LoginFragment : Fragment() {
         edit.apply {
             rememberMe = prefs.getBoolean("showSeen", false)
             registered = prefs.getBoolean("reg", false)
-            email = prefs.getString(R.string.username.toString(),"username").toString()
+            email = prefs.getString(getString(R.string.username),"username").toString()
         }.apply()
 
-        Toast.makeText(context, "$email", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, email, Toast.LENGTH_SHORT).show()
 
         if (rememberMe) {
             findNavController().navigate(R.id.action_login_to_shows)
