@@ -43,8 +43,6 @@ class ShowsFragment : Fragment() {
     private val binding get() = _binding!!
     private val dialogbinding get() = _binding_dialog!!
 
-    private var showsAdapter: ShowsAdapter? = null
-
     private val viewModel: ShowsViewModel by viewModels()
 
     private var user = ""
@@ -112,6 +110,7 @@ class ShowsFragment : Fragment() {
                 initShowsRecycler(show)
             }
         }
+        viewModel.getShows()
 
         binding.userPhoto.setOnClickListener {
             addProfileBottomSheet()

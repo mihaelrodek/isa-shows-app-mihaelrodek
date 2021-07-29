@@ -83,10 +83,10 @@ class ShowDetailsFragment : Fragment() {
             if (!review.isNullOrEmpty()) {
                 setVisibles(false)
                 initShowsRecycler(review)
-            } else if(review.isEmpty()){
-                setVisibles(false)
-            }else
+            }else if(review == null) {
                 Toast.makeText(context, "Fetching reviews failed", Toast.LENGTH_SHORT).show()
+            }else if(review.isEmpty())
+                setVisibles(false)
         }
 
         viewModel.getAddReviewsLiveData().observe(this.viewLifecycleOwner){ success->
