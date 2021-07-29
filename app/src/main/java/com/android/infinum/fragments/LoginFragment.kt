@@ -34,6 +34,7 @@ class LoginFragment : Fragment() {
     private var registered = false
 
     private var rememberMe = false
+    private var email = ""
 
     private lateinit var prefs: SharedPreferences
 
@@ -69,7 +70,10 @@ class LoginFragment : Fragment() {
         edit.apply {
             rememberMe = prefs.getBoolean("showSeen", false)
             registered = prefs.getBoolean("reg", false)
+            email = prefs.getString(R.string.username.toString(),"username").toString()
         }.apply()
+
+        Toast.makeText(context, "$email", Toast.LENGTH_SHORT).show()
 
         if (rememberMe) {
             findNavController().navigate(R.id.action_login_to_shows)
