@@ -17,10 +17,13 @@ object RetrofitClient {
     fun initRetrofit(preferences: SharedPreferences) {
         retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-            .client(okhttp())
-            .build()
-            .create(ApiService::class.java)
+            .addConverterFactory(Json {
+                ignoreUnknownKeys = true
+            }.asConverterFactory("application/json".toMediaType()))
+                .client(okhttp())
+                .build()
+                .create(ApiService::class.java)
+            }
     }
 
     private fun okhttp() : OkHttpClient {

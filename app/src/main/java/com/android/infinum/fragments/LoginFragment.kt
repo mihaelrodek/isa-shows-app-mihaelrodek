@@ -106,7 +106,7 @@ class LoginFragment : Fragment() {
         binding.apply {
 
             binding.loginButton.setOnClickListener {
-                viewModel.login(binding.emailInputEditor.text.toString(),binding.passwordInputEditor.text.toString())
+                viewModel.login(binding.emailInputEditor.text.toString(),binding.passwordInputEditor.text.toString(), prefs)
             }
         }
         binding.registerButton.setOnClickListener {

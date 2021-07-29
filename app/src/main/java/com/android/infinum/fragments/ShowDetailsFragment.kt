@@ -3,6 +3,7 @@ package com.android.infinum.fragments
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.LocusId
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +25,6 @@ import com.android.infinum.models.ReviewModel
 import com.android.infinum.models.ShowsModel
 import com.android.infinum.models.responses.ReviewResponse
 import com.android.infinum.utils.DividerItemDecorator
-import com.android.infinum.utils.ShowData
 import com.android.infinum.viewmodels.ShowDetailsViewModel
 import com.android.infinum.viewmodels.ShowsViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -35,7 +35,6 @@ class ShowDetailsFragment : Fragment() {
         private const val SHARED_PREFS = "sharedPrefs"
         private const val USERNAME = "username"
         private const val AT_SEPARATOR = "@"
-
     }
 
     private var user: String = ""
@@ -44,11 +43,11 @@ class ShowDetailsFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private var reviewAdapter: ReviewAdapter? = null
-
     val args: ShowDetailsFragmentArgs by navArgs()
 
     private val viewModel: ShowDetailsViewModel by viewModels()
+
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,9 +62,8 @@ class ShowDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val showID = args.showID
-        val showModel = ShowData.shows[showID - 1]
 
-        val sharedPreferences =
+        sharedPreferences =
             this.requireActivity().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
         sharedPreferences.edit()
         user = sharedPreferences.getString(getString(R.string.username), USERNAME).toString()

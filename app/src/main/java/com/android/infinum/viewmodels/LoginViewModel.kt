@@ -1,6 +1,7 @@
 package com.android.infinum.viewmodels
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +12,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel : ViewModel(){
+class LoginViewModel : ViewModel() {
+
+    companion object {
+        private var ACCESS_TOKEN = "access-token"
+        private var CLIENT = "client"
+        private var UID = "uid"
+    }
 
     private val loginLiveData: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
@@ -21,7 +28,7 @@ class LoginViewModel : ViewModel(){
         return loginLiveData
     }
 
-    fun login(email: String, password: String) {
+    fun login(email: String, password: String, prefs: SharedPreferences) {
         RetrofitClient.retrofit.login(LoginRequest(email, password))
             .enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(
@@ -30,18 +37,16 @@ class LoginViewModel : ViewModel(){
                 ) {
                     loginLiveData.value = response.isSuccessful
 
-                    //with (preferences.edit()){
-                    //    putString(ACCESS_TOKEN, response.headers() [ACCESS_TOKEN])
-                    //    putString(CLIENT, response. headers() [CLIENT])
-                    //    putString (UID, response. headers () [UID])
-                    //    apply()
+                    with(prefs.edit()) {
+                        putString(ACCESS_TOKEN, response.headers()[ACCESS_TOKEN])
+                        putString(CLIENT, response.headers()[CLIENT])
+                        putString(UID, response.headers()[UID])
+                        apply()
+                    }
                 }
-
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     loginLiveData.value = false
                 }
-
             })
     }
-
 }

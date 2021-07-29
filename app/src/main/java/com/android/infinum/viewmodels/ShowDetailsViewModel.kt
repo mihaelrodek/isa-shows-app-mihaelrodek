@@ -1,5 +1,6 @@
 package com.android.infinum.viewmodels
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ShowDetailsViewModel : ViewModel() {
+class ShowDetailsViewModel(sharedPrefs : SharedPreferences) : ViewModel() {
 
     private val reviewsLiveData: MutableLiveData<List<ReviewResponse>> by lazy {
         MutableLiveData<List<ReviewResponse>>()
@@ -85,13 +86,5 @@ class ShowDetailsViewModel : ViewModel() {
                 showLiveData.value = null
             }
         })
-    }
-
-    fun countReviews(showsModel: ShowsModel): Int {
-        return showsModel.reviews.count()
-    }
-
-    fun getAverage(showsModel: ShowsModel): Float {
-        return showsModel.reviews.map { it.rating }.average().toFloat()
     }
 }

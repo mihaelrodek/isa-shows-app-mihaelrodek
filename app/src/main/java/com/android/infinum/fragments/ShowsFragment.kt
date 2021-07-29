@@ -17,10 +17,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.infinum.R
-import com.android.infinum.utils.ShowData.shows
 import com.android.infinum.adapters.ShowsAdapter
 import com.android.infinum.databinding.DialogUserBinding
 import com.android.infinum.databinding.FragmentShowsBinding
+import com.android.infinum.models.responses.ShowResponse
 import com.android.infinum.utils.showPermissionsDeniedSnackbar
 import com.android.infinum.viewmodels.ShowsViewModel
 import com.bumptech.glide.Glide
@@ -102,35 +102,39 @@ class ShowsFragment : Fragment() {
             apply()
         }
 
-        initShowsRecycler()
-
-        viewModel.getShowsLiveData().observe(requireActivity(), { shows ->
-            updateItems()
-        })
+        viewModel.getShowsLiveData().observe(this.viewLifecycleOwner){ show->
+            if(show.isEmpty()){
+                binding.emptyStateLabel.isVisible = true
+                binding.showsRecyclerView.isVisible = false
+            }else if(show == null){
+                Toast.makeText(context, "Fetching shows failed", Toast.LENGTH_SHORT).show()
+            }else{
+                initShowsRecycler(show)
+            }
+        }
 
         binding.userPhoto.setOnClickListener {
             addProfileBottomSheet()
         }
 
         binding.refresh.setOnClickListener {
-            binding.emptyStateLabel.isVisible = !binding.emptyStateLabel.isVisible
-            binding.showsRecyclerView.isVisible = !binding.emptyStateLabel.isVisible
-            //viewModel.initShows()
+            setVisibles()
         }
     }
 
-    private fun initShowsRecycler() {
+    private fun setVisibles(){
+        binding.emptyStateLabel.isVisible = !binding.emptyStateLabel.isVisible
+        binding.showsRecyclerView.isVisible = !binding.emptyStateLabel.isVisible
+    }
+
+    private fun initShowsRecycler(show: List<ShowResponse>) {
 
         binding.showsRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        binding.showsRecyclerView.adapter = ShowsAdapter(shows) { item ->
+        binding.showsRecyclerView.adapter = ShowsAdapter(show) { item ->
             val action = ShowsFragmentDirections.actionSshowsToShowdetails(item.toInt())
             findNavController().navigate(action)
         }
-    }
-
-    private fun updateItems() {
-        showsAdapter?.setItems(shows)
     }
 
     private fun addProfileBottomSheet() {
