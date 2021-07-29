@@ -1,5 +1,6 @@
 package com.android.infinum.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,6 +29,12 @@ class LoginViewModel : ViewModel(){
                     response: Response<LoginResponse>
                 ) {
                     loginLiveData.value = response.isSuccessful
+
+                    //with (preferences.edit()){
+                    //    putString(ACCESS_TOKEN, response.headers() [ACCESS_TOKEN])
+                    //    putString(CLIENT, response. headers() [CLIENT])
+                    //    putString (UID, response. headers () [UID])
+                    //    apply()
                 }
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {

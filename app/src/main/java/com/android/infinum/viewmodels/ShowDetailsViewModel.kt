@@ -78,6 +78,7 @@ class ShowDetailsViewModel : ViewModel() {
                 response: Response<ShowResponse>
             ) {
                 showLiveData.value = response.body()
+                println(response.body())
             }
 
             override fun onFailure(call: Call<ShowResponse>, t: Throwable) {
