@@ -21,4 +21,6 @@
     <string name="remember_me">Remember me</string>
     <string name="change_profile_photo">Change profile photo</string>
     <string name="logout">Logout</string>
+    <string name="no_permission">Please check your permissions in Settings.</string>
+    <string name="settings">Settings</string>
 </resources>
