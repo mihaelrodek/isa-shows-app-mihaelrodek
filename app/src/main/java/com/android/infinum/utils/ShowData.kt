@@ -1,4 +1,8 @@
-package com.android.infinum
+package com.android.infinum.utils
+
+import com.android.infinum.R
+import com.android.infinum.models.ReviewModel
+import com.android.infinum.models.ShowsModel
 
 object ShowData {
     val shows = listOf(
@@ -12,7 +16,11 @@ object ShowData {
             "Daredevil",
             "A blind lawyer by day, vigilante by night. Matt Murdock fights the crime of New York as Daredevil.",
             listOf(
-                ReviewModel("Test", 5.0f, R.drawable.super_mario),
+                ReviewModel(
+                    "Test",
+                    5.0f,
+                    R.drawable.super_mario
+                ),
                 ReviewModel
                     (
                     "Jako jako puno previše mnogo jako veliko puno veliki komentar na review ove serije u par redova da Brane bude sretan i da mogu krenuti na 5. i 6. zadacu",

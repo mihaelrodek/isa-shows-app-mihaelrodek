@@ -1,8 +1,6 @@
-package com.android.infinum
+package com.android.infinum.fragments
 
-import android.app.Activity
 import android.content.Context.MODE_PRIVATE
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,19 +9,28 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.infinum.*
+import com.android.infinum.adapters.ReviewAdapter
 import com.android.infinum.databinding.DialogAddReviewBinding
 import com.android.infinum.databinding.FragmentShowDetailsBinding
+import com.android.infinum.models.ReviewModel
+import com.android.infinum.models.ShowsModel
+import com.android.infinum.utils.DividerItemDecorator
+import com.android.infinum.utils.ShowData
+import com.android.infinum.viewmodels.ShowDetailsViewModel
+import com.android.infinum.viewmodels.ShowsViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ShowDetailsFragment : Fragment() {
 
     companion object {
-        private const val EXTRA_SHOW = "EXTRA_SHOW"
         private const val SHARED_PREFS = "sharedPrefs"
         private const val USERNAME = "username"
+        private const val AT_SEPARATOR = "@"
 
     }
 
@@ -36,6 +43,8 @@ class ShowDetailsFragment : Fragment() {
     private var reviewAdapter: ReviewAdapter? = null
 
     val args: ShowDetailsFragmentArgs by navArgs()
+
+    private val viewModel: ShowDetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,11 +70,15 @@ class ShowDetailsFragment : Fragment() {
         binding.ShowDetailsDescription.text = showModel.description
         binding.ShowDetailsImage.setImageResource(showModel.imageResourceId)
 
+        viewModel.getReviewsLiveData().observe(requireActivity(), { reviews ->
+            updateItems(showModel)
+        })
+
         binding.writeReview.setOnClickListener {
             showAddReviewBottomSheet(showModel)
         }
 
-        setVisibles(showModel.reviews.isNullOrEmpty())
+        setVisibles(showModel.reviews.isNullOrEmpty(),showModel)
 
         if (reviewAdapter?.itemCount != 0) {
             setAverageRatingAndQuantity(showModel)
@@ -78,11 +91,16 @@ class ShowDetailsFragment : Fragment() {
         }
     }
 
-    private fun setVisibles(bool: Boolean) {
+    private fun updateItems(showModel: ShowsModel) {
+        reviewAdapter?.setReviews(showModel.reviews)
+    }
+
+    private fun setVisibles(bool: Boolean, showModel: ShowsModel) {
         binding.emptyStateLabel.isVisible = bool
         binding.showRecyclerView.isVisible = bool.not()
         binding.ratingBarAverageText.isVisible = bool.not()
         binding.ratingBarAverage.isVisible = bool.not()
+        viewModel.initReviews(showModel)
     }
 
     private fun initShowsRecycler(showModel: ShowsModel) {
@@ -96,9 +114,8 @@ class ShowDetailsFragment : Fragment() {
                 )
             }!!)
         binding.showRecyclerView.addItemDecoration(dividerItemDecoration)
-
-        binding.showRecyclerView.adapter = ReviewAdapter(showModel.reviews, user)
-        reviewAdapter?.setReviews(showModel.reviews)
+        binding.showRecyclerView.adapter = ReviewAdapter(showModel.reviews, user.substringBefore(
+            AT_SEPARATOR))
     }
 
     private fun showAddReviewBottomSheet(showModel: ShowsModel) {
@@ -117,8 +134,8 @@ class ShowDetailsFragment : Fragment() {
                     bottomSheetBinding.ratingBar.rating, R.drawable.super_mario
                 )
 
-                showModel.addReview(reviewModel)
-                reviewAdapter?.setReviews(showModel.reviews)
+                viewModel.addReview(showModel, reviewModel)
+                updateItems(showModel)
 
                 setAverageRatingAndQuantity(showModel)
 
@@ -127,7 +144,7 @@ class ShowDetailsFragment : Fragment() {
                 initShowsRecycler(showModel)
 
                 if (reviewAdapter?.itemCount != 0) {
-                    setVisibles(false)
+                    setVisibles(false,showModel)
                 }
 
             }
@@ -140,10 +157,9 @@ class ShowDetailsFragment : Fragment() {
     }
 
     private fun setAverageRatingAndQuantity(showsModel: ShowsModel) {
-        val helper = showsModel.reviews.map { it.rating }.average()
         binding.ratingBarAverageText.text =
-            "${showsModel.reviews.size} REVIEWS, ${(Math.round(helper) * 100.0) / 100.0} AVERAGE"
-        binding.ratingBarAverage.rating = helper.toFloat()
+            "${viewModel.countReviews(showsModel)} REVIEWS, ${(Math.round(viewModel.getAverage(showsModel)) * 100.0) / 100.0} AVERAGE"
+        binding.ratingBarAverage.rating = viewModel.getAverage(showsModel)
     }
 
 

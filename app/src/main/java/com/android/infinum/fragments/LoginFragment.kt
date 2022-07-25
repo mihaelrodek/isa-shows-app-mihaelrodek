@@ -1,7 +1,6 @@
-package com.android.infinum
+package com.android.infinum.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -11,6 +10,7 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.android.infinum.R
 import com.android.infinum.databinding.FragmentLoginBinding
 
 
@@ -51,8 +51,14 @@ class LoginFragment : Fragment() {
                         checkMail(binding.emailInput.editText?.text.toString().trim())
         }
 
-        binding.loginButton.setOnClickListener {
+        val prefs = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val rememberMe = prefs.getBoolean("showSeen", false)
 
+        if (rememberMe) {
+            findNavController().navigate(R.id.action_first_to_second)
+        }
+
+        binding.loginButton.setOnClickListener {
 
             val sharedPreferences = this.requireActivity()
                 .getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
@@ -60,13 +66,13 @@ class LoginFragment : Fragment() {
             editor.apply {
                 putString(
                     getString(R.string.username),
-                    binding.emailInput.editText?.text.toString().substringBefore(AT_SEPARATOR)
+                    binding.emailInput.editText?.text.toString()
                 )
+                putBoolean("RememberMe", binding.rememberMe.isChecked)
             }.apply()
 
             findNavController().navigate(R.id.action_first_to_second)
         }
-
     }
 
     private fun checkMail(email: String): Boolean {

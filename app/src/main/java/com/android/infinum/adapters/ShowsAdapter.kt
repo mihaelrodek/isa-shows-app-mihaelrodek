@@ -1,9 +1,10 @@
-package com.android.infinum
+package com.android.infinum.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.infinum.databinding.ShowsItemBinding
+import com.android.infinum.models.ShowsModel
 
 class ShowsAdapter(
     private var items: List<ShowsModel>,
@@ -13,7 +14,6 @@ class ShowsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowsViewHolder {
 
         val binding = ShowsItemBinding.inflate(LayoutInflater.from(parent.context))
-
         return ShowsViewHolder(binding)
     }
 
@@ -44,7 +44,6 @@ class ShowsAdapter(
             binding.root.setOnClickListener {
                 onClickCallback(item.id)
             }
-
         }
     }
 }
