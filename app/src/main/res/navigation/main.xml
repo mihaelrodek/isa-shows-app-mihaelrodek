@@ -2,23 +2,29 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    app:startDestination="@id/first">
+    app:startDestination="@id/login">
 
     <fragment
-        android:id="@+id/first"
-        android:name="com.android.infinum.LoginFragment"
+        android:id="@+id/login"
+        android:name="com.android.infinum.fragments.LoginFragment"
         tools:layout="@layout/fragment_login">
 
         <action
-            android:id="@+id/action_first_to_second"
-            app:destination="@id/second"
-            app:popUpTo="@id/first"
+            android:id="@+id/action_login_to_shows"
+            app:destination="@id/shows"
+            app:popUpTo="@id/login"
+            app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/registration"
+            app:popUpTo="@id/login"
             app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
-        android:id="@+id/second"
-        android:name="com.android.infinum.ShowsFragment"
+        android:id="@+id/shows"
+        android:name="com.android.infinum.fragments.ShowsFragment"
         tools:layout="@layout/fragment_shows">
 
         <argument
@@ -26,22 +32,36 @@
             app:argType="integer"/>
 
         <action
-            android:id="@+id/action_second_to_third"
-            app:destination="@id/third"/>
+            android:id="@+id/action_sshows_to_showdetails"
+            app:destination="@id/show_details"/>
 
         <action
-            android:id="@+id/action_second_to_first"
-            app:destination="@id/first"/>
+            android:id="@+id/action_shows_to_login"
+            app:destination="@id/login"/>
     </fragment>
 
     <fragment
-        android:id="@+id/third"
-        android:name="com.android.infinum.ShowDetailsFragment"
+        android:id="@+id/show_details"
+        android:name="com.android.infinum.fragments.ShowDetailsFragment"
         tools:layout="@layout/fragment_show_details">
 
         <argument
             android:name="showID"
             app:argType="integer"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/registration"
+        android:name="com.android.infinum.fragments.RegisterFragment"
+        tools:layout="@layout/fragment_register">
+
+        <action
+            android:id="@+id/action_registration_to_login"
+            app:destination="@id/login"
+            app:popUpTo="@id/login"
+            app:popUpToInclusive="true"
+            />
 
     </fragment>
 </navigation>

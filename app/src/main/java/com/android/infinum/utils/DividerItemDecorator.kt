@@ -1,4 +1,4 @@
-package com.android.infinum
+package com.android.infinum.utils
 
 import android.graphics.Canvas
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +10,7 @@ import android.view.View
 class DividerItemDecorator(private val mDivider: Drawable) : RecyclerView.ItemDecoration() {
 
     override fun onDrawOver(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+
         val dividerLeft = parent.paddingLeft
         val dividerRight = parent.width - parent.paddingRight
         val childCount = parent.childCount
@@ -22,6 +23,5 @@ class DividerItemDecorator(private val mDivider: Drawable) : RecyclerView.ItemDe
             mDivider.setBounds(dividerLeft, dividerTop, dividerRight, dividerBottom)
             mDivider.draw(canvas)
         }
-
     }
 }
